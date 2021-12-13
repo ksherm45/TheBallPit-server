@@ -1,11 +1,16 @@
 const { Schema, model } = require("mongoose");
-const CommentModel = require('./Comment.model')
+require('./Comment.model')
+
 
 const ballSchema = new Schema(
     {
         name: String,
         description: String,
         image: String,
+        id: {
+            type: Schema.Types.ObjectId,
+            ref: "CommentModel"
+        }
 
 })
 

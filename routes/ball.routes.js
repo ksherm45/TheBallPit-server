@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const BallModel = require('../models/Ball.model')
+const CommentModel = require('../models/Comment.model')
+
 // NOTE: All your API routes will start from /api
 // will handle all GET requests to http:localhost:5005/api/balls
 router.get('/homepage', (req, res) => {
      BallModel.find()
-          .then((balls) => {
-               res.status(200).json(balls)
+     .populate('id')
+          .then((response) => {                             //talk to josh
+               res.status(200).json(response)               //talk to josh
           })
           .catch((err) => {
                res.status(500).json({
@@ -32,6 +35,21 @@ router.post('/create', (req, res) => {
                })
           })
 })
+
+router.post('/comment', (req, res) => {
+     const {comment} = req.body;
+     console.log(req.body)
+     CommentModel.create({comment})
+           .then((response) => {
+                res.status(200).json(response)
+           })
+           .catch((err) => {
+                res.status(500).json({
+                     error: 'Something went wrong',
+                     message: err
+                })
+           })
+ })
 // will handle all GET requests to http:localhost:5005/api/balls/:ballId
 //PS: Don’t type :todoId , it’s something dynamic,
 router.get('/ball/:ballId', (req, res) => {
