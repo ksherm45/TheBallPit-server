@@ -44,12 +44,19 @@ app.use(session({
 //const allRoutes = require("./routes");
 //app.use("/api", allRoutes);
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
 const ballRoutes = require('./routes/ball.routes');
 app.use('/api', ballRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
 
+app.use((req, res, next) => {
+	// If no routes match, send them the React HTML.
+	res.sendFile(__dirname + "/public/index.html");
+});
 
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
