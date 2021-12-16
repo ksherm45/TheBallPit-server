@@ -9,6 +9,23 @@ const BallModel = require('../models/Ball.model');
 const CommentModel = require('../models/Comment.model')
 const UserModel = require('../models/User.model');
 
+router.patch('/addedball', (req, res) => {
+  const {id, name, desc} = req.body.addedBall;
+  let userId = req.session.loggedInUser._id
+  console.log('sess' ,userId)
+  console.log('wallala' , id, name, desc)
+  UserModel.findByIdAndUpdate(userId, {$push: {addedBall: {id: id, name: name, desc: desc}}} )
+        .then((response) => {
+             res.status(200).json(response)
+        })
+        .catch((err) => {
+             res.status(500).json({
+                  error: 'Something went wrong',
+                  message: err
+             })
+        }) 
+})
+
 router.post('/signup', (req, res) => {
     const {username, email, password } = req.body;
     console.log(username, email, password);
@@ -144,5 +161,7 @@ const isLoggedIn = (req, res, next) => {
 router.get("/user", isLoggedIn, (req, res, next) => {
   res.status(200).json(req.session.loggedInUser);
 });
+
+
 
 module.exports = router;

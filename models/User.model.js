@@ -10,7 +10,9 @@ let UserSchema = new Schema({
   passwordHash: {
     type: String,
     required: true
-  }
+  },
+
+  addedBall: []
 })
 
 // 2. Define your model
